@@ -4,6 +4,7 @@ import { parseSurvey, parseSurveyResponse } from '../src/domain/schema'
 import { syncStackQuestions } from '../src/domain/stackQuestions'
 import { isQuestionVisible, validateQuestionAnswer } from '../src/domain/visibility'
 import type { Question, StackDefinition, Survey, SurveyResponse } from '../src/domain/types'
+import { demoSurvey } from '../src/data/demo'
 
 const baseSurvey: Survey = {
   schemaVersion: 1,
@@ -31,6 +32,7 @@ const response = (id: string, answers: SurveyResponse['answers']): SurveyRespons
 
 describe('survey schema', () => {
   it('accepts a valid survey', () => expect(parseSurvey(baseSurvey).surveyId).toBe('test-survey'))
+  it('validates the bundled demo survey', () => expect(parseSurvey(demoSurvey).questions.length).toBeGreaterThan(15))
   it('rejects duplicate question ids', () => expect(() => parseSurvey({ ...baseSurvey, questions: [...baseSurvey.questions, baseSurvey.questions[0]] })).toThrow(/중복 문항 ID/))
   it('rejects path-like survey ids', () => expect(() => parseSurvey({ ...baseSurvey, surveyId: '../escape' })).toThrow())
   it('validates response UUID and timestamp', () => expect(parseSurveyResponse(response('10000000-0000-4000-8000-000000000001', { major: 'yes' })).surveyId).toBe('test-survey'))
