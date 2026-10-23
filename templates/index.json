@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "templateId": "common",
+      "path": "templates/common.json",
+      "name": "공통 사전 진단"
+    },
+    {
+      "templateId": "python-ai",
+      "path": "templates/python-ai.json",
+      "name": "Python·AI 과정"
+    },
+    {
+      "templateId": "java-web",
+      "path": "templates/java-web.json",
+      "name": "Java 웹 개발 과정"
+    },
+    {
+      "templateId": "data-analytics",
+      "path": "templates/data-analytics.json",
+      "name": "데이터 분석 과정"
+    },
+    {
+      "templateId": "generative-ai",
+      "path": "templates/generative-ai.json",
+      "name": "생성형 AI 활용 과정"
+    }
+  ]
+}

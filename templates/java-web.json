@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "templateId": "java-web",
+  "name": "Java 웹 개발 과정",
+  "description": "Java, 객체지향, SQL, 웹 프런트엔드와 Spring을 다루는 과정용 템플릿입니다.",
+  "recommendedStacks": [
+    "java",
+    "javascript",
+    "sql",
+    "spring",
+    "git"
+  ],
+  "questions": [
+    {
+      "id": "webRequestUnderstanding",
+      "type": "single",
+      "title": "브라우저에서 웹 서버로 요청이 전달되는 과정을 설명할 수 있나요?",
+      "required": true,
+      "category": "웹 기초",
+      "options": [
+        {
+          "value": "never",
+          "label": "처음 듣는다"
+        },
+        {
+          "value": "heard",
+          "label": "대략 들어봤다"
+        },
+        {
+          "value": "explain",
+          "label": "기본 흐름을 설명할 수 있다"
+        },
+        {
+          "value": "implemented",
+          "label": "직접 구현·디버깅한 적이 있다"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "templateId": "generative-ai",
+  "name": "생성형 AI 활용 과정",
+  "description": "생성형 AI, 프롬프트 설계, 결과 검증과 업무 자동화를 다루는 과정용 템플릿입니다.",
+  "recommendedStacks": [
+    "generative-ai",
+    "prompt-engineering",
+    "python"
+  ],
+  "questions": [
+    {
+      "id": "automationTarget",
+      "type": "longText",
+      "title": "AI로 개선하거나 자동화해 보고 싶은 작업이 있나요?",
+      "required": false,
+      "category": "과정 기대",
+      "validation": {
+        "maxLength": 600
+      }
+    }
+  ]
+}

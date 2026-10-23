@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "surveys": [
+    {
+      "surveyId": "demo-python-ai-2026",
+      "title": "Python·AI 과정 사전 이해도 조사",
+      "courseName": "Python·AI",
+      "cohort": "데모 1기",
+      "revision": 1,
+      "status": "published"
+    }
+  ]
+}

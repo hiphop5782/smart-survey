@@ -1,0 +1,1041 @@
+{
+  "schemaVersion": 1,
+  "stacks": [
+    {
+      "id": "python",
+      "label": "Python",
+      "group": "언어",
+      "description": "기본 문법, 반복문과 자료형",
+      "questions": [
+        {
+          "id": "pythonFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "Python 코드를 어느 정도 다룰 수 있나요?",
+          "language": "python",
+          "code": "total = 0\nfor number in [1, 2, 3]:\n    total += number\nprint(total)",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "pythonOutputQuiz",
+          "type": "codeQuiz",
+          "title": "다음 Python 코드의 출력 결과를 선택하세요.",
+          "language": "python",
+          "code": "values = [2, 4, 6]\nprint(values[-1])",
+          "required": false,
+          "category": "코드 해석",
+          "options": [
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            },
+            {
+              "value": "unknown",
+              "label": "모르겠다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "java",
+      "label": "Java",
+      "group": "언어",
+      "description": "클래스, 객체와 기본 문법",
+      "questions": [
+        {
+          "id": "javaFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "Java 클래스와 메서드 코드를 어느 정도 이해하나요?",
+          "language": "java",
+          "code": "class Greeter {\n  String hello(String name) {\n    return \"Hello, \" + name;\n  }\n}",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "javaTerms",
+          "type": "termMatrix",
+          "title": "Java 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "class",
+              "label": "클래스"
+            },
+            {
+              "value": "interface",
+              "label": "인터페이스"
+            },
+            {
+              "value": "exception",
+              "label": "예외 처리"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "javascript",
+      "label": "JavaScript",
+      "group": "언어",
+      "description": "웹 문법, 배열과 비동기 처리",
+      "questions": [
+        {
+          "id": "javascriptFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "JavaScript 배열 처리 코드를 어느 정도 이해하나요?",
+          "language": "javascript",
+          "code": "const doubled = [1, 2, 3].map((n) => n * 2);\nconsole.log(doubled);",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "javascriptTerms",
+          "type": "termMatrix",
+          "title": "JavaScript 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "dom",
+              "label": "DOM"
+            },
+            {
+              "value": "promise",
+              "label": "Promise"
+            },
+            {
+              "value": "event",
+              "label": "이벤트"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "typescript",
+      "label": "TypeScript",
+      "group": "언어",
+      "description": "정적 타입과 인터페이스",
+      "questions": [
+        {
+          "id": "typescriptFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "TypeScript 타입 선언을 어느 정도 이해하나요?",
+          "language": "typescript",
+          "code": "type User = { id: number; name: string };\nconst user: User = { id: 1, name: 'Kim' };",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "typescriptTerms",
+          "type": "termMatrix",
+          "title": "TypeScript 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "type",
+              "label": "타입 별칭"
+            },
+            {
+              "value": "generic",
+              "label": "제네릭"
+            },
+            {
+              "value": "union",
+              "label": "유니온 타입"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "react",
+      "label": "React",
+      "group": "프런트엔드",
+      "description": "컴포넌트, 상태와 훅",
+      "questions": [
+        {
+          "id": "reactFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "React 컴포넌트를 어느 정도 이해하나요?",
+          "language": "tsx",
+          "code": "function Welcome({ name }: { name: string }) {\n  return <h1>안녕하세요, {name}</h1>;\n}",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "reactTerms",
+          "type": "termMatrix",
+          "title": "React 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "component",
+              "label": "컴포넌트"
+            },
+            {
+              "value": "props",
+              "label": "Props"
+            },
+            {
+              "value": "state",
+              "label": "State"
+            },
+            {
+              "value": "hook",
+              "label": "Hook"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spring",
+      "label": "Spring",
+      "group": "백엔드",
+      "description": "Spring Boot, DI와 MVC",
+      "questions": [
+        {
+          "id": "springFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "Spring Controller 코드를 어느 정도 이해하나요?",
+          "language": "java",
+          "code": "@GetMapping(\"/hello\")\npublic String hello() {\n  return \"hello\";\n}",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "springTerms",
+          "type": "termMatrix",
+          "title": "Spring 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "di",
+              "label": "의존성 주입"
+            },
+            {
+              "value": "mvc",
+              "label": "MVC"
+            },
+            {
+              "value": "jpa",
+              "label": "JPA"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sql",
+      "label": "SQL",
+      "group": "데이터",
+      "description": "조회, 집계와 테이블 관계",
+      "questions": [
+        {
+          "id": "sqlFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "SQL 조회문을 어느 정도 이해하나요?",
+          "language": "sql",
+          "code": "SELECT department, COUNT(*)\nFROM employees\nGROUP BY department;",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 쿼리를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "sqlTerms",
+          "type": "termMatrix",
+          "title": "데이터베이스 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "join",
+              "label": "JOIN"
+            },
+            {
+              "value": "group",
+              "label": "GROUP BY"
+            },
+            {
+              "value": "index",
+              "label": "인덱스"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pandas",
+      "label": "Pandas / NumPy",
+      "group": "데이터",
+      "description": "배열과 데이터프레임 처리",
+      "questions": [
+        {
+          "id": "pandasFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "Pandas 데이터 처리 코드를 어느 정도 이해하나요?",
+          "language": "python",
+          "code": "average = df.groupby('category')['score'].mean()\nprint(average)",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "pandasTerms",
+          "type": "termMatrix",
+          "title": "Python 데이터 분석 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "ndarray",
+              "label": "NumPy 배열"
+            },
+            {
+              "value": "dataframe",
+              "label": "DataFrame"
+            },
+            {
+              "value": "missing",
+              "label": "결측치 처리"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tensorflow",
+      "label": "TensorFlow",
+      "group": "AI",
+      "description": "모델, 학습과 평가",
+      "questions": [
+        {
+          "id": "tensorflowFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "TensorFlow 모델 구성 코드를 어느 정도 이해하나요?",
+          "language": "python",
+          "code": "model = tf.keras.Sequential([\n    tf.keras.layers.Dense(1)\n])",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "tensorflowTerms",
+          "type": "termMatrix",
+          "title": "머신러닝 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "model",
+              "label": "모델"
+            },
+            {
+              "value": "loss",
+              "label": "손실 함수"
+            },
+            {
+              "value": "epoch",
+              "label": "에포크"
+            },
+            {
+              "value": "overfit",
+              "label": "과적합"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "opencv",
+      "label": "OpenCV",
+      "group": "AI",
+      "description": "이미지 읽기와 영상 처리",
+      "questions": [
+        {
+          "id": "opencvFamiliarity",
+          "type": "codeFamiliarity",
+          "title": "OpenCV 이미지 처리 코드를 어느 정도 이해하나요?",
+          "language": "python",
+          "code": "image = cv2.imread('photo.jpg')\ngray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)",
+          "required": true,
+          "category": "코드 친숙도",
+          "options": [
+            {
+              "value": "never",
+              "label": "처음 본다"
+            },
+            {
+              "value": "seen",
+              "label": "본 적은 있다"
+            },
+            {
+              "value": "understand",
+              "label": "동작을 설명할 수 있다"
+            },
+            {
+              "value": "write",
+              "label": "비슷한 코드를 직접 작성할 수 있다"
+            }
+          ]
+        },
+        {
+          "id": "opencvTerms",
+          "type": "termMatrix",
+          "title": "컴퓨터 비전 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "pixel",
+              "label": "픽셀"
+            },
+            {
+              "value": "color",
+              "label": "색상 공간"
+            },
+            {
+              "value": "contour",
+              "label": "윤곽선"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "excel",
+      "label": "Excel",
+      "group": "데이터",
+      "description": "함수, 피벗과 데이터 정리",
+      "questions": [
+        {
+          "id": "excelExperience",
+          "type": "scale",
+          "title": "Excel로 데이터를 정리하고 분석하는 데 얼마나 익숙한가요?",
+          "required": true,
+          "category": "도구 활용",
+          "min": 1,
+          "max": 5,
+          "minLabel": "처음 사용",
+          "maxLabel": "능숙하게 활용"
+        },
+        {
+          "id": "excelTerms",
+          "type": "termMatrix",
+          "title": "Excel 기능의 활용 경험을 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "lookup",
+              "label": "조회 함수"
+            },
+            {
+              "value": "pivot",
+              "label": "피벗 테이블"
+            },
+            {
+              "value": "chart",
+              "label": "차트"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "statistics",
+      "label": "기초 통계",
+      "group": "데이터",
+      "description": "분포, 대표값과 가설 검정",
+      "questions": [
+        {
+          "id": "statisticsExperience",
+          "type": "scale",
+          "title": "기초 통계 개념을 데이터 해석에 활용하는 데 얼마나 익숙한가요?",
+          "required": true,
+          "category": "개념 이해",
+          "min": 1,
+          "max": 5,
+          "minLabel": "처음 배움",
+          "maxLabel": "직접 분석 가능"
+        },
+        {
+          "id": "statisticsTerms",
+          "type": "termMatrix",
+          "title": "통계 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "mean",
+              "label": "평균·중앙값"
+            },
+            {
+              "value": "variance",
+              "label": "분산·표준편차"
+            },
+            {
+              "value": "correlation",
+              "label": "상관관계"
+            },
+            {
+              "value": "hypothesis",
+              "label": "가설 검정"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "generative-ai",
+      "label": "생성형 AI",
+      "group": "AI",
+      "description": "생성형 AI 활용과 결과 검증",
+      "questions": [
+        {
+          "id": "genAiUsage",
+          "type": "multiple",
+          "title": "생성형 AI를 어떤 목적으로 사용해 보았나요?",
+          "required": false,
+          "category": "AI 활용",
+          "options": [
+            {
+              "value": "search",
+              "label": "정보 탐색·요약"
+            },
+            {
+              "value": "writing",
+              "label": "문서 작성"
+            },
+            {
+              "value": "coding",
+              "label": "코드 생성·수정"
+            },
+            {
+              "value": "image",
+              "label": "이미지 생성"
+            },
+            {
+              "value": "automation",
+              "label": "업무 자동화"
+            },
+            {
+              "value": "none",
+              "label": "사용 경험 없음"
+            }
+          ]
+        },
+        {
+          "id": "genAiVerification",
+          "type": "single",
+          "title": "AI가 만든 답변이나 코드를 주로 어떻게 검증하나요?",
+          "required": true,
+          "category": "AI 활용",
+          "options": [
+            {
+              "value": "none",
+              "label": "별도로 검증하지 않는다"
+            },
+            {
+              "value": "read",
+              "label": "내용을 읽어보고 판단한다"
+            },
+            {
+              "value": "sources",
+              "label": "공식 문서나 출처와 비교한다"
+            },
+            {
+              "value": "test",
+              "label": "직접 실행·테스트하고 수정한다"
+            },
+            {
+              "value": "no-use",
+              "label": "사용 경험이 없다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prompt-engineering",
+      "label": "프롬프트 설계",
+      "group": "AI",
+      "description": "목표·맥락·형식 지정과 반복 개선",
+      "questions": [
+        {
+          "id": "promptExperience",
+          "type": "scale",
+          "title": "원하는 결과를 얻기 위해 프롬프트를 구조화하고 개선하는 데 얼마나 익숙한가요?",
+          "required": true,
+          "category": "AI 활용",
+          "min": 1,
+          "max": 5,
+          "minLabel": "처음 사용",
+          "maxLabel": "반복 개선 가능"
+        },
+        {
+          "id": "promptPractice",
+          "type": "multiple",
+          "title": "프롬프트 작성 시 활용해 본 방법을 선택하세요.",
+          "required": false,
+          "category": "AI 활용",
+          "options": [
+            {
+              "value": "context",
+              "label": "배경과 맥락 제공"
+            },
+            {
+              "value": "example",
+              "label": "예시 제공"
+            },
+            {
+              "value": "format",
+              "label": "출력 형식 지정"
+            },
+            {
+              "value": "iterate",
+              "label": "결과를 보고 반복 개선"
+            },
+            {
+              "value": "none",
+              "label": "잘 모르겠다"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "git",
+      "label": "Git / GitHub",
+      "group": "개발 도구",
+      "description": "버전 관리와 협업",
+      "questions": [
+        {
+          "id": "gitExperience",
+          "type": "scale",
+          "title": "Git으로 변경 이력을 관리하는 데 얼마나 익숙한가요?",
+          "required": true,
+          "category": "개발 도구",
+          "min": 1,
+          "max": 5,
+          "minLabel": "처음 사용",
+          "maxLabel": "협업 가능"
+        },
+        {
+          "id": "gitTerms",
+          "type": "termMatrix",
+          "title": "Git 관련 용어의 친숙도를 표시하세요.",
+          "required": true,
+          "category": "기술 용어",
+          "terms": [
+            {
+              "value": "commit",
+              "label": "커밋"
+            },
+            {
+              "value": "branch",
+              "label": "브랜치"
+            },
+            {
+              "value": "merge",
+              "label": "병합"
+            },
+            {
+              "value": "pullRequest",
+              "label": "Pull Request"
+            }
+          ],
+          "levels": [
+            {
+              "value": "new",
+              "label": "처음 듣는다"
+            },
+            {
+              "value": "heard",
+              "label": "들어봤다"
+            },
+            {
+              "value": "explain",
+              "label": "설명할 수 있다"
+            },
+            {
+              "value": "used",
+              "label": "직접 사용했다"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
