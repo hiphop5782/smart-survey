@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "templateId": "common",
+  "name": "공통 사전 진단",
+  "description": "모든 교육과정에 공통으로 사용할 배경, 학습 경험, AI 활용 및 기대 문항입니다.",
+  "recommendedStacks": [],
+  "questions": [
+    {
+      "id": "ageBand",
+      "type": "single",
+      "title": "연령대를 선택하세요.",
+      "required": false,
+      "category": "학습자 배경",
+      "options": [
+        { "value": "under30", "label": "20대 이하" },
+        { "value": "30s", "label": "30대" },
+        { "value": "40s", "label": "40대" },
+        { "value": "50s", "label": "50대" },
+        { "value": "60plus", "label": "60대 이상" },
+        { "value": "skip", "label": "응답하지 않음" }
+      ]
+    },
+    {
+      "id": "majorBackground",
+      "type": "single",
+      "title": "현재 과정과 관련된 전공 배경이 있나요?",
+      "required": true,
+      "category": "학습자 배경",
+      "options": [
+        { "value": "major", "label": "관련 전공" },
+        { "value": "adjacent", "label": "유사 전공" },
+        { "value": "nonMajor", "label": "비전공" },
+        { "value": "skip", "label": "응답하지 않음" }
+      ]
+    },
+    {
+      "id": "experienceYears",
+      "type": "single",
+      "title": "관련 실무 또는 프로젝트 경험은 어느 정도인가요?",
+      "required": true,
+      "category": "학습자 배경",
+      "options": [
+        { "value": "none", "label": "경험 없음" },
+        { "value": "under1", "label": "1년 미만" },
+        { "value": "1to3", "label": "1~3년" },
+        { "value": "3plus", "label": "3년 이상" },
+        { "value": "skip", "label": "응답하지 않음" }
+      ]
+    },
+    {
+      "id": "previousActivity",
+      "type": "shortText",
+      "title": "최근의 직무·학습·프로젝트 경험을 간단히 적어주세요.",
+      "description": "회사명, 이름, 연락처 등 개인을 식별할 수 있는 정보는 적지 마세요.",
+      "required": false,
+      "category": "학습자 배경",
+      "validation": { "maxLength": 200 }
+    },
+    {
+      "id": "motivation",
+      "type": "multiple",
+      "title": "과정에 참여한 계기를 모두 선택하세요.",
+      "required": true,
+      "category": "학습 목표",
+      "options": [
+        { "value": "employment", "label": "취업 준비" },
+        { "value": "careerChange", "label": "전직 준비" },
+        { "value": "work", "label": "현재 업무 역량 강화" },
+        { "value": "personal", "label": "개인 프로젝트" },
+        { "value": "explore", "label": "분야 탐색" }
+      ]
+    },
+    {
+      "id": "aiExperience",
+      "type": "single",
+      "title": "생성형 AI 도구를 사용해 본 적이 있나요?",
+      "required": true,
+      "category": "AI 활용",
+      "options": [
+        { "value": "never", "label": "없다" },
+        { "value": "few", "label": "몇 번 사용했다" },
+        { "value": "monthly", "label": "월 1회 이상 사용한다" },
+        { "value": "weekly", "label": "주 1회 이상 사용한다" },
+        { "value": "daily", "label": "거의 매일 사용한다" }
+      ]
+    },
+    {
+      "id": "aiTools",
+      "type": "multiple",
+      "title": "사용해 본 AI 도구를 선택하세요.",
+      "required": false,
+      "category": "AI 활용",
+      "showIf": { "questionId": "aiExperience", "notEquals": "never" },
+      "options": [
+        { "value": "chatgpt", "label": "ChatGPT" },
+        { "value": "claude", "label": "Claude" },
+        { "value": "gemini", "label": "Gemini" },
+        { "value": "copilot", "label": "GitHub Copilot" },
+        { "value": "other", "label": "기타" }
+      ]
+    },
+    {
+      "id": "learningConfidence",
+      "type": "scale",
+      "title": "새로운 기술을 실습으로 배우는 데 현재 얼마나 자신 있나요?",
+      "required": true,
+      "category": "학습 준비도",
+      "min": 1,
+      "max": 5,
+      "minLabel": "많이 걱정됨",
+      "maxLabel": "매우 자신 있음"
+    },
+    {
+      "id": "expectations",
+      "type": "longText",
+      "title": "이번 과정에서 배우고 싶거나 기대하는 점을 적어주세요.",
+      "required": false,
+      "category": "학습 목표",
+      "validation": { "maxLength": 1000 }
+    },
+    {
+      "id": "questionsForInstructor",
+      "type": "longText",
+      "title": "강사에게 미리 묻고 싶은 점이나 걱정되는 부분이 있나요?",
+      "required": false,
+      "category": "학습 목표",
+      "validation": { "maxLength": 1000 }
+    }
+  ]
+}
