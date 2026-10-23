@@ -95,6 +95,21 @@ export interface SurveyResponse {
   answers: Record<string, AnswerValue>
 }
 
+export interface EncryptedSurveyResponse {
+  schemaVersion: 1
+  surveyId: string
+  revision: number
+  responseId: string
+  submittedAt: string
+  encrypted: true
+  encryption: {
+    algorithm: 'RSA-OAEP-256+A256GCM'
+    encryptedKey: string
+    iv: string
+    ciphertext: string
+  }
+}
+
 export interface StackDefinition {
   id: string
   label: string

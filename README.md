@@ -6,7 +6,8 @@
 - 프런트엔드: React + Vite + TypeScript
 - 호스팅: GitHub Pages
 - 데이터: 같은 저장소의 `data` 브랜치에 JSON으로 관리
-- 별도 DB·백엔드·Cloudflare Workers: 사용하지 않음
+- 응답 수집: Cloudflare Worker + Turnstile + GitHub App
+- 별도 DB: 사용하지 않음
 
 ## 주요 기능
 
@@ -15,8 +16,8 @@
 - 프로그래밍 스택 선택 시 JSON 카탈로그에서 관련 문항 자동 생성
 - 관리자 설문 생성, 편집, 복제, 미리보기, JSON 가져오기·내보내기
 - 관리자 런타임 PAT를 이용한 `data` 브랜치 저장 및 재조회 검증
-- 모바일 학생 설문, 진행률, 필수값 검사, 응답 JSON 다운로드
-- 응답 JSON 일괄 가져오기, 동적 통계, 코드 퀴즈 정답률, CSV/JSON 내보내기
+- 모바일 학생 설문, 진행률, 필수값 검사, 브라우저 암호화 자동 제출
+- 암호화 응답 동기화·로컬 복호화, 수동 JSON 가져오기, 동적 통계, CSV/JSON 내보내기
 - GitHub Actions 기반 테스트·빌드·Pages 배포
 
 ## 로컬 실행
@@ -31,6 +32,7 @@ npm run dev
 ```bash
 npm test
 npm run typecheck
+npm run worker:check
 npm run build
 ```
 
@@ -77,18 +79,29 @@ surveys/
 
 토큰은 현재 React 메모리에만 유지됩니다. 새로고침하면 사라지며 소스, 빌드, URL, localStorage, sessionStorage, 로그에 기록하지 않습니다. 게시 설문 수정 시 revision을 증가시키고 `revisions/{revision}.json` 스냅샷을 함께 저장합니다. 저장 성공 후 파일을 다시 읽어 실제 내용이 일치할 때만 성공으로 표시합니다.
 
-## 학생 응답 수집
+## 학생 응답 자동 제출
 
-GitHub Pages만으로 비로그인 학생 응답을 자동 저장할 수 없습니다. 학생의 `응답 JSON 내려받기`는 GitHub 제출이 아니며 강사에게 자동 전송되지 않습니다.
+학생이 보안 확인 후 `응답 제출하기`를 누르면 다음 흐름이 한 번에 실행됩니다.
 
-권장 흐름:
+1. 브라우저가 평문 응답을 AES-256-GCM으로 암호화합니다.
+2. 일회용 AES 키를 관리자 RSA 공개키로 암호화합니다.
+3. Cloudflare Worker가 Turnstile 토큰, 설문 게시 상태와 리비전을 검증합니다.
+4. Worker가 암호문만 `data` 브랜치에 커밋합니다.
+5. 저장한 파일을 다시 읽어 내용이 일치할 때만 제출 완료를 표시합니다.
 
-1. 학생이 응답 JSON을 내려받습니다.
-2. 강사가 안내한 조직 승인 파일 전달 경로로 제출합니다.
-3. 강사가 결과 화면에서 파일을 일괄 가져옵니다.
-4. 분석과 CSV/JSON 내보내기는 브라우저 안에서 수행됩니다.
+Worker는 평문 응답을 받지 않으며 관리자 개인키는 결과 화면의 브라우저 메모리에만 있습니다. 관리자는 **GitHub 응답 동기화**를 눌러 암호문을 가져오고 브라우저에서 복호화합니다. 장애 시에는 학생 화면의 수동 JSON 다운로드를 사용할 수 있습니다.
 
-실제 학생 응답은 공개 저장소에 평문으로 올리지 마세요. 자세한 내용은 [제한 사항](docs/LIMITATIONS.md)을 확인하세요.
+Cloudflare, Turnstile, GitHub App, 암호화 키 설정은 [Cloudflare 자동 제출 설정](docs/CLOUDFLARE_SETUP.md), 공개 메타데이터와 규모 제한은 [제한 사항](docs/LIMITATIONS.md)을 확인하세요.
+
+## Cloudflare Worker 빠른 검증
+
+```bash
+npm run keys:generate
+npm run worker:check
+npx wrangler deploy --dry-run -c worker/wrangler.toml
+```
+
+운영 Worker 주소는 `https://smart-survey-api.smart-survey.workers.dev`입니다. 로컬 프런트엔드는 기본적으로 `http://localhost:8787`의 Wrangler 개발 서버를 사용하며, 필요하면 `VITE_SUBMISSION_API_URL`로 바꿀 수 있습니다. `api.survey.sysout.co.kr`을 쓰려면 `sysout.co.kr` DNS zone을 같은 Cloudflare 계정으로 옮기거나 별도 라우팅 구성이 필요합니다.
 
 ## GitHub Pages 및 도메인 수동 설정
 
@@ -104,7 +117,8 @@ GitHub Pages만으로 비로그인 학생 응답을 자동 저장할 수 없습�
 ## 데이터와 보안 원칙
 
 - 직접 식별정보는 기본 문항에서 수집하지 않습니다.
-- 공개 저장소에 실제 학생 응답을 커밋하지 않습니다.
+- 공개 저장소에는 실제 학생 응답의 암호문만 커밋합니다. 평문은 금지합니다.
+- 복호화 개인키를 저장소, Worker, 브라우저 저장소에 보관하지 않습니다.
 - 연령대·전공·경력을 실력 점수에 포함하지 않습니다.
 - 자기평가와 실제 코드 해석 정답률을 분리합니다.
 - 공개 설문 JSON에 코드 퀴즈 정답을 넣지 않습니다.

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { QUESTION_TYPES, type Survey, type SurveyResponse } from './types'
+import { QUESTION_TYPES, type EncryptedSurveyResponse, type Survey, type SurveyResponse } from './types'
 
 const optionSchema = z.object({
   value: z.string().min(1),
@@ -105,12 +105,31 @@ export const responseSchema = z.object({
   answers: z.record(z.string(), answerValueSchema),
 })
 
+export const encryptedResponseSchema = z.object({
+  schemaVersion: z.literal(1),
+  surveyId: z.string().regex(/^[a-z0-9][a-z0-9-]{2,63}$/),
+  revision: z.number().int().positive(),
+  responseId: z.string().uuid(),
+  submittedAt: z.string().datetime(),
+  encrypted: z.literal(true),
+  encryption: z.object({
+    algorithm: z.literal('RSA-OAEP-256+A256GCM'),
+    encryptedKey: z.string().min(1),
+    iv: z.string().min(1),
+    ciphertext: z.string().min(1),
+  }),
+})
+
 export function parseSurvey(value: unknown): Survey {
   return surveySchema.parse(value) as Survey
 }
 
 export function parseSurveyResponse(value: unknown): SurveyResponse {
   return responseSchema.parse(value) as SurveyResponse
+}
+
+export function parseEncryptedSurveyResponse(value: unknown): EncryptedSurveyResponse {
+  return encryptedResponseSchema.parse(value) as EncryptedSurveyResponse
 }
 
 export function formatSchemaError(error: unknown): string {

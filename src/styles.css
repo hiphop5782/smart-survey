@@ -135,6 +135,11 @@ textarea { resize: vertical; line-height: 1.55; }
 .completion-mark { width: 82px; height: 82px; border-radius: 50%; background: var(--lime); color: var(--green-dark); display: grid; place-items: center; font-size: 40px; margin-bottom: 22px; }
 .completion-page h1 { font-family: Georgia, serif; font-size: 44px; margin: 10px 0; }
 .completion-page > p { color: var(--muted); max-width: 620px; line-height: 1.7; }
+.submission-panel { width: min(420px, 100%); display: grid; gap: 14px; justify-items: center; margin: 16px 0; }
+.turnstile-slot { min-height: 65px; display: grid; place-items: center; }
+.manual-fallback { width: min(620px, 100%); margin-top: 24px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); }
+.manual-fallback summary { cursor: pointer; color: var(--green); font-weight: 800; }
+.manual-fallback p { font-size: 13px; line-height: 1.6; }
 
 .admin-page { min-height: 70vh; }
 .admin-token-panel { background: var(--green-dark); color: white; padding: 28px; border-radius: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -210,6 +215,11 @@ label > span small { color: var(--muted); font-weight: 500; }
 .preview-panel .question-fieldset { margin-bottom: 60px; }
 
 .results-heading { align-items: center; }
+.encrypted-sync-panel { background: var(--green-dark); color: white; border-radius: 14px; padding: 28px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr auto; gap: 18px 28px; align-items: center; }
+.encrypted-sync-panel h2 { margin: 5px 0 8px; }
+.encrypted-sync-panel p { color: #bdd0c6; margin: 0; line-height: 1.6; font-size: 13px; max-width: 720px; }
+.encrypted-sync-panel .eyebrow { color: var(--lime); }
+.encrypted-sync-panel .status-banner { grid-column: 1 / -1; margin: 0; }
 .import-panel { border: 2px dashed #aab9b0; border-radius: 14px; padding: 28px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px; background: rgb(255 253 248 / 60%); }
 .upload-icon { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; background: var(--lime); font-size: 25px; }
 .import-panel h2 { margin: 0 0 6px; font-size: 19px; }
@@ -291,6 +301,8 @@ footer p { color: #9bb0a5; font-size: 12px; margin: 8px 0 0; }
   .upload-icon { margin: auto; }
   .import-panel .compact-actions { justify-content: center; }
   .answer-key-panel { grid-template-columns: 1fr; }
+  .encrypted-sync-panel { grid-template-columns: 1fr; }
+  .encrypted-sync-panel .compact-actions { justify-content: flex-start; }
   .status-banner { flex-direction: column; }
   footer { flex-direction: column; }
 }

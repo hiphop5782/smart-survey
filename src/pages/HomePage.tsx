@@ -31,7 +31,7 @@ export function HomePage() {
       <section className="process-band" aria-label="이용 과정">
         <div><strong>01</strong><span>과정 선택</span><small>공유받은 설문을 확인합니다.</small></div>
         <div><strong>02</strong><span>사전 진단</span><small>경험과 준비도를 솔직하게 답합니다.</small></div>
-        <div><strong>03</strong><span>파일 전달</span><small>응답 JSON을 내려받아 강사에게 전달합니다.</small></div>
+        <div><strong>03</strong><span>안전한 제출</span><small>브라우저에서 암호화해 자동 저장합니다.</small></div>
       </section>
 
       <section className="page-section survey-list-section" id="available-surveys">
@@ -54,7 +54,7 @@ export function HomePage() {
 
       <section className="privacy-section page-section">
         <div className="privacy-icon" aria-hidden="true">◇</div>
-        <div><span className="eyebrow">YOUR DATA, YOUR FILE</span><h2>응답은 자동 전송되지 않습니다.</h2><p>이 버전은 별도 서버 없이 GitHub Pages에서 동작합니다. 답변 완료 후 JSON 파일을 내려받고 강사가 안내한 안전한 방법으로 전달하세요.</p></div>
+        <div><span className="eyebrow">ENCRYPT BEFORE SUBMIT</span><h2>답변은 암호화한 뒤 제출합니다.</h2><p>평문 답변은 학생 브라우저를 벗어나지 않습니다. 암호화된 응답만 자동 저장되며, 관리자가 보관한 개인키가 있어야 결과를 열 수 있습니다.</p></div>
       </section>
     </>
   )

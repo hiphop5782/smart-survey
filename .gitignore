@@ -7,3 +7,6 @@ coverage/
 .vite/
 .data-seed/
 .data-worktree/
+.response-keys/
+.dev.vars
+worker/.dev.vars

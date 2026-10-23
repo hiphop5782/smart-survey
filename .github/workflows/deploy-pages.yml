@@ -29,6 +29,8 @@ jobs:
         run: npm ci
       - name: Test
         run: npm test
+      - name: Check Cloudflare Worker
+        run: npm run worker:check && npx wrangler deploy --dry-run -c worker/wrangler.toml
       - name: Build
         run: npm run build
       - name: Configure Pages
