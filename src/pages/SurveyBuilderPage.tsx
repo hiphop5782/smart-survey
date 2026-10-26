@@ -72,11 +72,11 @@ function QuestionEditor({ question, index, total, onChange, onDelete, onMoveTo }
         <div className="question-position-bar">
           <div><strong>문항 순서</strong><small>번호를 선택하면 원하는 위치로 바로 이동합니다.</small></div>
           <div className="question-position-controls">
-            <button type="button" disabled={index === 0} onClick={() => moveTo(0)}>맨 위</button>
+            <button type="button" disabled={index === 0} onClick={() => moveTo(0)} aria-label="맨 위로">처음</button>
             <button type="button" disabled={index === 0} onClick={() => moveTo(index - 1)} aria-label="한 칸 위로">↑</button>
             <label><span className="sr-only">이동할 문항 순서</span><select value={index} onChange={(event) => moveTo(Number(event.target.value))} aria-label={`${question.title} 이동할 순서`}>{Array.from({ length: total }, (_, targetIndex) => <option key={targetIndex} value={targetIndex}>{targetIndex + 1}번째</option>)}</select></label>
             <button type="button" disabled={index === total - 1} onClick={() => moveTo(index + 1)} aria-label="한 칸 아래로">↓</button>
-            <button type="button" disabled={index === total - 1} onClick={() => moveTo(total - 1)}>맨 아래</button>
+            <button type="button" disabled={index === total - 1} onClick={() => moveTo(total - 1)} aria-label="맨 아래로">끝</button>
           </div>
         </div>
         <div className="form-grid two">
