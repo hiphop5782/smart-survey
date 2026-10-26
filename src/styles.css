@@ -47,9 +47,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .brand strong { font-size: 15px; letter-spacing: -.025em; }
 .brand small { color: var(--subtle); font-size: 9px; letter-spacing: .04em; margin-top: 4px; }
 .site-header nav { display: flex; gap: 4px; }
-.site-header nav a { text-decoration: none; color: #515154; padding: 8px 13px; border-radius: 9px; font-size: 13px; font-weight: 600; transition: color .2s, background .2s; }
-.site-header nav a:hover { color: var(--ink); background: rgb(0 0 0 / 4%); }
-.site-header nav a.active { color: var(--ink); background: #e8e8ed; }
+.site-header nav a, .site-header nav button { appearance: none; border: 0; text-decoration: none; color: #515154; background: transparent; padding: 8px 13px; border-radius: 9px; font-size: 13px; font-weight: 600; cursor: pointer; transition: color .2s, background .2s; }
+.site-header nav a:hover, .site-header nav button:hover { color: var(--ink); background: rgb(0 0 0 / 4%); }
+.site-header nav a.active, .site-header nav button.active { color: var(--ink); background: #e8e8ed; }
 
 .page-section { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 96px 0; }
 .page-section.wide { width: min(1380px, calc(100% - 40px)); }
@@ -79,6 +79,30 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .button.ghost:hover:not(:disabled) { background: #e8e8ed; }
 .button.danger { color: #b42318; background: #fff1f0; border-color: #ffd2cf; }
 .button.full { width: 100%; }
+.button-spinner { width: 14px; height: 14px; border: 2px solid rgb(255 255 255 / 42%); border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; }
+
+.admin-access-backdrop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; overflow-y: auto; padding: 28px; background: rgb(14 16 20 / 48%); backdrop-filter: blur(16px) saturate(115%); animation: dialog-fade-in .18s ease-out; }
+.admin-access-dialog { position: relative; width: min(470px, 100%); margin: auto; padding: 34px; border: 1px solid rgb(255 255 255 / 72%); border-radius: 28px; background: rgb(255 255 255 / 97%); box-shadow: 0 30px 100px rgb(0 0 0 / 24%); animation: dialog-rise-in .24s cubic-bezier(.2, .8, .2, 1); }
+.dialog-close { position: absolute; top: 18px; right: 18px; width: 32px; height: 32px; display: grid; place-items: center; appearance: none; border: 0; border-radius: 50%; color: var(--muted); background: #f1f1f3; font-size: 22px; line-height: 1; cursor: pointer; transition: color .18s, background .18s, transform .18s; }
+.dialog-close:hover { color: var(--ink); background: #e4e4e8; transform: rotate(4deg); }
+.dialog-github-mark { width: 48px; height: 48px; display: grid; place-items: center; margin-bottom: 24px; border-radius: 15px; color: white; background: #151517; box-shadow: 0 9px 22px rgb(0 0 0 / 18%); font-size: 13px; font-weight: 800; letter-spacing: -.03em; }
+.admin-access-dialog h2 { margin: 0; font-size: 32px; line-height: 1.12; letter-spacing: -.05em; }
+.dialog-intro { margin: 12px 0 24px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.admin-access-dialog form > label { display: block; margin-bottom: 8px; color: #424245; font-size: 11px; font-weight: 680; }
+.dialog-token-field { position: relative; }
+.dialog-token-field input { width: 100%; height: 50px; padding: 12px 74px 12px 14px; border: 1px solid var(--line-strong); border-radius: 13px; color: var(--ink); background: white; font-family: "SFMono-Regular", "Cascadia Code", Consolas, monospace; font-size: 13px; transition: border-color .18s, box-shadow .18s; }
+.dialog-token-field input:focus { outline: none; border-color: #66aaf0; box-shadow: 0 0 0 4px rgb(0 113 227 / 10%); }
+.dialog-token-field input[aria-invalid="true"] { border-color: #e4847d; box-shadow: 0 0 0 4px rgb(201 52 47 / 8%); }
+.dialog-token-field button { position: absolute; top: 7px; right: 7px; height: 36px; appearance: none; border: 0; border-radius: 9px; padding: 0 11px; color: var(--blue); background: #f0f7ff; font-size: 11px; font-weight: 650; cursor: pointer; }
+.dialog-error { margin: 9px 0 0; color: #b42318; font-size: 12px; line-height: 1.45; }
+.dialog-security-note { display: flex; align-items: flex-start; gap: 8px; margin: 14px 0 20px; color: var(--subtle); font-size: 11px; line-height: 1.5; }
+.dialog-security-note span { flex: 0 0 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; color: var(--green); background: #e8f7ed; font-size: 10px; font-weight: 800; }
+.dialog-help-link { width: fit-content; display: block; margin: 19px auto 0; color: var(--blue); text-decoration: none; font-size: 12px; font-weight: 650; }
+.dialog-help-link:hover { text-decoration: underline; }
+.dialog-permission-note { margin: 15px 0 0; padding-top: 15px; border-top: 1px solid var(--line); color: var(--subtle); text-align: center; font-size: 10px; line-height: 1.55; }
+.dialog-permission-note strong { color: #515154; }
+@keyframes dialog-fade-in { from { opacity: 0; } }
+@keyframes dialog-rise-in { from { opacity: 0; transform: translateY(12px) scale(.985); } }
 
 .product-preview { position: relative; overflow: hidden; border: 1px solid rgb(0 0 0 / 8%); border-radius: 28px; background: rgb(255 255 255 / 88%); box-shadow: 0 2px 3px rgb(0 0 0 / 3%), 0 34px 90px rgb(30 55 90 / 16%); transform: perspective(1200px) rotateY(-3deg) rotateX(1deg); }
 .product-preview::before { content: ""; position: absolute; inset: -60% 10% auto -10%; height: 330px; background: radial-gradient(circle, rgb(106 171 255 / 22%), transparent 68%); pointer-events: none; }
@@ -204,6 +228,13 @@ textarea { resize: vertical; line-height: 1.55; }
 .admin-token-panel { display: grid; grid-template-columns: 1fr 1.1fr; gap: 44px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: white; box-shadow: var(--shadow-sm); }
 .admin-token-panel h2 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.03em; }
 .admin-token-panel p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.github-connection-state { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.github-connection-state > div { min-width: 150px; margin-right: auto; }
+.github-connection-state small, .github-connection-state strong { display: block; }
+.github-connection-state small { margin-bottom: 4px; color: var(--subtle); font-size: 10px; }
+.github-connection-state strong { font-size: 14px; letter-spacing: -.01em; }
+.connection-check { flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: var(--green); background: #e6f7ec; font-size: 14px; font-weight: 800; }
+.github-connection-state.disconnected .connection-check { color: #8a4b00; background: #fff3df; }
 .token-controls { display: flex; align-items: flex-end; gap: 10px; }
 .token-controls label { flex: 1; }
 label > span, .token-controls label span { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; color: #424245; font-size: 11px; font-weight: 650; }
@@ -348,7 +379,7 @@ footer p { margin: 7px 0 0; color: var(--subtle); font-size: 11px; }
   .site-header { height: 58px; }
   .header-inner { width: calc(100% - 28px); }
   .brand small { display: none; }
-  .site-header nav a { padding: 7px 10px; font-size: 12px; }
+  .site-header nav a, .site-header nav button { padding: 7px 10px; font-size: 12px; }
   .page-section, .page-section.wide { width: min(100% - 28px, 1180px); padding: 64px 0; }
   .hero { min-height: auto; gap: 52px; padding-top: 72px; padding-bottom: 72px; }
   .hero h1 { font-size: clamp(46px, 14vw, 64px); }
@@ -375,6 +406,9 @@ footer p { margin: 7px 0 0; color: var(--subtle); font-size: 11px; }
   .scale-wrap { grid-template-columns: 1fr; }
   .scale-options span { min-height: 44px; }
   .admin-token-panel { grid-template-columns: 1fr; gap: 22px; padding: 22px; }
+  .github-connection-state { justify-content: flex-start; flex-wrap: wrap; }
+  .github-connection-state > div { min-width: 0; flex: 1; }
+  .github-connection-state .button { flex: 1 1 auto; }
   .token-controls { align-items: stretch; flex-direction: column; }
   .admin-list article { align-items: flex-start; flex-direction: column; }
   .builder-section, .aside-card, .preview-panel, .answer-key-panel { padding: 21px; border-radius: 18px; }
@@ -388,6 +422,9 @@ footer p { margin: 7px 0 0; color: var(--subtle); font-size: 11px; }
   .answer-key-panel { grid-template-columns: 1fr; }
   footer { width: calc(100% - 28px); align-items: flex-start; flex-direction: column; }
   .footer-note { text-align: left; }
+  .admin-access-backdrop { padding: 14px; align-items: end; }
+  .admin-access-dialog { padding: 28px 22px 24px; border-radius: 24px 24px 20px 20px; }
+  .admin-access-dialog h2 { font-size: 28px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

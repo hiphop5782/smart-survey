@@ -2,7 +2,8 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from 're
 
 interface AdminSessionValue {
   token: string
-  setToken: (token: string) => void
+  githubLogin: string
+  connect: (token: string, githubLogin: string) => void
   clearToken: () => void
 }
 
@@ -10,7 +11,19 @@ const AdminSessionContext = createContext<AdminSessionValue | undefined>(undefin
 
 export function AdminSessionProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState('')
-  const value = useMemo(() => ({ token, setToken, clearToken: () => setToken('') }), [token])
+  const [githubLogin, setGitHubLogin] = useState('')
+  const value = useMemo(() => ({
+    token,
+    githubLogin,
+    connect: (nextToken: string, nextLogin: string) => {
+      setToken(nextToken)
+      setGitHubLogin(nextLogin)
+    },
+    clearToken: () => {
+      setToken('')
+      setGitHubLogin('')
+    },
+  }), [githubLogin, token])
   return <AdminSessionContext.Provider value={value}>{children}</AdminSessionContext.Provider>
 }
 

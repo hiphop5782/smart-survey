@@ -4,6 +4,7 @@ import { fetchSurveyIndex } from '../lib/github/dataSource'
 import type { SurveyIndexItem } from '../domain/types'
 import { Loading } from '../components/Loading'
 import { StatusBanner } from '../components/StatusBanner'
+import { AdminAccessButton } from '../components/AdminAccessButton'
 
 export function HomePage() {
   const [surveys, setSurveys] = useState<SurveyIndexItem[]>([])
@@ -25,7 +26,7 @@ export function HomePage() {
           <div className="hero-kicker"><span />CURRICULUM READINESS</div>
           <h1>수업의 시작을,<br /><em>더 정확하게.</em></h1>
           <p>학습자의 경험과 준비도를 미리 이해하고, 첫 수업부터 모두에게 맞는 속도로 시작하세요.</p>
-          <div className="hero-actions"><a href="#available-surveys" className="button primary">설문 참여하기</a><Link to="/admin" className="button secondary">관리자 콘솔</Link></div>
+          <div className="hero-actions"><a href="#available-surveys" className="button primary">설문 참여하기</a><AdminAccessButton className="button secondary">관리자 콘솔</AdminAccessButton></div>
           <div className="hero-note"><span aria-hidden="true">✓</span> 이름과 연락처를 기본 수집하지 않으며, 답변은 제출 전에 암호화됩니다.</div>
         </div>
         <div className="product-preview" aria-label="설문 분석 화면 예시">

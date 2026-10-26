@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { AdminAccessButton } from './AdminAccessButton'
 
 function ScrollToTop() {
   const location = useLocation()
@@ -10,6 +11,7 @@ function ScrollToTop() {
 }
 
 export function Layout() {
+  const location = useLocation()
   return (
     <div className="app-shell">
       <ScrollToTop />
@@ -21,7 +23,7 @@ export function Layout() {
           </Link>
           <nav aria-label="주요 메뉴">
             <NavLink to="/" end>설문 참여</NavLink>
-            <NavLink to="/admin">관리자</NavLink>
+            <AdminAccessButton className={location.pathname.startsWith('/admin') ? 'active' : undefined}>관리자</AdminAccessButton>
           </nav>
         </div>
       </header>

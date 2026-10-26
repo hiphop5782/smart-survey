@@ -16,6 +16,10 @@ interface PutFileResponse {
   commit: { sha: string }
 }
 
+interface GitHubUserResponse {
+  login: string
+}
+
 function assertSafePath(path: string): void {
   if (!/^(templates|surveys)\/[a-zA-Z0-9._/-]+\.json$/.test(path) || path.includes('..') || path.startsWith('/')) {
     throw new Error('허용되지 않는 GitHub 파일 경로입니다.')
@@ -44,6 +48,26 @@ async function parseError(response: Response): Promise<never> {
     detail = response.statusText
   }
   throw new GitHubApiError(githubErrorMessage(response.status, detail), response.status, detail)
+}
+
+export async function validateGitHubToken(token: string): Promise<{ login: string }> {
+  const trimmedToken = token.trim()
+  if (!trimmedToken) throw new Error('GitHub 키를 입력하세요.')
+
+  const response = await fetch('https://api.github.com/user', {
+    headers: {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${trimmedToken}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+    },
+  })
+  if (!response.ok) return parseError(response)
+
+  const user = (await response.json()) as GitHubUserResponse
+  if (!user.login) throw new Error('GitHub 계정 정보를 확인하지 못했습니다.')
+
+  await getGitHubFile('surveys/index.json', trimmedToken)
+  return { login: user.login }
 }
 
 export async function getGitHubFile(path: string, token?: string, branch = 'data'): Promise<{ value: unknown; sha: string }> {
