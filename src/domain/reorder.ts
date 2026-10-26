@@ -9,3 +9,10 @@ export function moveItem<T>(items: T[], fromIndex: number, toIndex: number): T[]
   reordered.splice(toIndex, 0, item)
   return reordered
 }
+
+export function insertItem<T>(items: T[], item: T, atIndex: number): T[] {
+  const target = Math.max(0, Math.min(atIndex, items.length))
+  const next = [...items]
+  next.splice(target, 0, item)
+  return next
+}

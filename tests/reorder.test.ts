@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { moveItem } from '../src/domain/reorder'
+import { insertItem, moveItem } from '../src/domain/reorder'
 
 describe('moveItem', () => {
   it('moves an item directly to the requested position', () => {
@@ -10,5 +10,10 @@ describe('moveItem', () => {
     const items = ['첫째', '둘째']
     expect(moveItem(items, 0, 0)).toBe(items)
     expect(moveItem(items, 0, 4)).toBe(items)
+  })
+
+  it('inserts an item at the beginning or a selected position', () => {
+    expect(insertItem(['둘째', '셋째'], '첫째', 0)).toEqual(['첫째', '둘째', '셋째'])
+    expect(insertItem(['첫째', '셋째'], '둘째', 1)).toEqual(['첫째', '둘째', '셋째'])
   })
 })

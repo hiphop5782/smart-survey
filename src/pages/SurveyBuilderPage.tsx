@@ -7,7 +7,7 @@ import { StatusBanner } from '../components/StatusBanner'
 import { commonQuestions, stackDefinitions as bundledStacks, templates as bundledTemplates } from '../data/catalog'
 import { formatSchemaError, parseSurvey, surveySchema } from '../domain/schema'
 import { createQuestionId, syncStackQuestions } from '../domain/stackQuestions'
-import { moveItem } from '../domain/reorder'
+import { insertItem, moveItem } from '../domain/reorder'
 import type { Option, Question, QuestionType, StackDefinition, Survey, SurveyIndexItem, TemplateDefinition } from '../domain/types'
 import { QUESTION_TYPES } from '../domain/types'
 import { downloadJson, readJsonFile } from '../lib/files'
@@ -17,6 +17,17 @@ import { GitHubApiError } from '../lib/github/errors'
 
 const typeLabels: Record<QuestionType, string> = {
   single: '객관식(단일)', multiple: '객관식(복수)', shortText: '짧은 주관식', longText: '긴 주관식', scale: '숫자 척도', codeFamiliarity: '코드 인지도', termMatrix: '기술 용어 인지도', codeQuiz: '코드 해석 문제',
+}
+
+const typeHelp: Record<QuestionType, string> = {
+  single: '여러 선택지 중 하나만 고르는 문항입니다.',
+  multiple: '여러 선택지를 동시에 고를 수 있는 문항입니다.',
+  shortText: '한두 문장 정도의 짧은 답변을 받습니다.',
+  longText: '경험이나 의견처럼 긴 답변을 받습니다.',
+  scale: '1~5처럼 숫자로 수준이나 자신감을 답하게 합니다.',
+  codeFamiliarity: '코드를 보여주고 학습자의 익숙한 정도를 묻습니다.',
+  termMatrix: '여러 기술 용어의 인지도를 표 형태로 한 번에 묻습니다.',
+  codeQuiz: '코드를 보여주고 실행 결과나 의미를 선택하게 합니다.',
 }
 
 function newSurvey(): Survey {
@@ -44,19 +55,26 @@ function parseOptionLines(value: string): Option[] {
 }
 
 function optionLines(options?: Option[]): string {
-  return options?.map((option) => `${option.value}=${option.label}`).join('\n') ?? ''
+  return options?.map((option) => option.value === option.label ? option.label : `${option.value}=${option.label}`).join('\n') ?? ''
 }
 
 function defaultQuestion(type: QuestionType, questions: Question[]): Question {
   const common = { id: createQuestionId(type, questions), type, title: '새 문항을 입력하세요.', required: false, category: '사용자 문항' }
   if (type === 'scale') return { ...common, type, min: 1, max: 5, minLabel: '낮음', maxLabel: '높음' }
-  if (type === 'termMatrix') return { ...common, type, terms: [{ value: 'term1', label: '용어 1' }], levels: [{ value: 'new', label: '처음 듣는다' }, { value: 'used', label: '사용해 봤다' }] }
-  if (type === 'codeFamiliarity' || type === 'codeQuiz') return { ...common, type, language: 'text', code: '// 코드를 입력하세요', options: [{ value: 'unknown', label: '모르겠다' }, { value: 'answer', label: '선택지' }] }
-  if (type === 'single' || type === 'multiple') return { ...common, type, options: [{ value: 'option1', label: '선택지 1' }, { value: 'option2', label: '선택지 2' }] }
+  if (type === 'termMatrix') return { ...common, type, terms: [{ value: '용어 1', label: '용어 1' }], levels: [{ value: '처음 듣는다', label: '처음 듣는다' }, { value: '사용해 봤다', label: '사용해 봤다' }] }
+  if (type === 'codeFamiliarity' || type === 'codeQuiz') return { ...common, type, language: 'text', code: '// 코드를 입력하세요', options: [{ value: '모르겠다', label: '모르겠다' }, { value: '선택지', label: '선택지' }] }
+  if (type === 'single' || type === 'multiple') return { ...common, type, options: [{ value: '선택지 1', label: '선택지 1' }, { value: '선택지 2', label: '선택지 2' }] }
   return common
 }
 
-function QuestionEditor({ question, index, total, onChange, onDelete, onMoveTo }: { question: Question; index: number; total: number; onChange: (question: Question) => void; onDelete: () => void; onMoveTo: (targetIndex: number) => void }) {
+function insertionPositionLabel(position: number, questionCount: number): string {
+  if (questionCount === 0) return '첫 문항으로 추가'
+  if (position === 0) return '맨 앞 · 1번째'
+  if (position === questionCount) return `맨 뒤 · ${questionCount + 1}번째`
+  return `${position}번 뒤 · ${position + 1}번째`
+}
+
+function QuestionEditor({ question, index, total, autoOpen, onChange, onDelete, onMoveTo }: { question: Question; index: number; total: number; autoOpen: boolean; onChange: (question: Question) => void; onDelete: () => void; onMoveTo: (targetIndex: number) => void }) {
   const editorRef = useRef<HTMLDetailsElement>(null)
   const [isOpen, setIsOpen] = useState(index === 0)
   const update = (patch: Partial<Question>) => onChange({ ...question, ...patch } as Question)
@@ -65,6 +83,12 @@ function QuestionEditor({ question, index, total, onChange, onDelete, onMoveTo }
     onMoveTo(targetIndex)
     window.requestAnimationFrame(() => editorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }))
   }
+  useEffect(() => {
+    if (!autoOpen) return
+    setIsOpen(true)
+    const frame = window.requestAnimationFrame(() => editorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }))
+    return () => window.cancelAnimationFrame(frame)
+  }, [autoOpen])
   return (
     <details ref={editorRef} className="question-editor" open={isOpen} onToggle={(event) => setIsOpen(event.currentTarget.open)}>
       <summary><span className="drag-index">{String(index + 1).padStart(2, '0')}</span><div><strong>{question.title}</strong><small>{typeLabels[question.type]}{question.autoGenerated ? ` · ${question.sourceStack} 자동 생성` : ''}</small></div><span aria-hidden="true">⌄</span></summary>
@@ -89,10 +113,10 @@ function QuestionEditor({ question, index, total, onChange, onDelete, onMoveTo }
           <label><span>분류</span><input value={question.category ?? ''} onChange={(event) => update({ category: event.target.value || undefined })} /></label>
           <label className="check-row"><input type="checkbox" checked={Boolean(question.required)} onChange={(event) => update({ required: event.target.checked })} /><span>필수 응답</span></label>
         </div>
-        {question.options && <label><span>선택지 <small>값=표시문구, 한 줄에 하나</small></span><textarea rows={5} value={optionLines(question.options)} onChange={(event) => update({ options: parseOptionLines(event.target.value) })} /></label>}
-        {'code' in question && <><div className="form-grid two"><label><span>코드 언어</span><input value={question.language} onChange={(event) => update({ language: event.target.value } as Partial<Question>)} /></label><div /></div><label><span>코드</span><textarea className="code-input" rows={7} value={question.code} onChange={(event) => update({ code: event.target.value } as Partial<Question>)} /></label></>}
+        {question.options && <label><span>선택지</span><textarea rows={5} value={optionLines(question.options)} onChange={(event) => update({ options: parseOptionLines(event.target.value) })} /><small className="field-help">한 줄에 하나씩 입력하세요. 예: <code>매우 그렇다</code> · 고정 값이 필요할 때만 <code>agree=그렇다</code></small></label>}
+        {'code' in question && <><div className="form-grid two"><label><span>코드 언어</span><input value={question.language} onChange={(event) => update({ language: event.target.value } as Partial<Question>)} placeholder="예: python, java, javascript" /><small className="field-help">코드 블록 위에 표시할 언어 이름입니다.</small></label><div /></div><label><span>보여줄 코드</span><textarea className="code-input" rows={7} value={question.code} onChange={(event) => update({ code: event.target.value } as Partial<Question>)} /><small className="field-help">학습자에게 보여줄 코드를 그대로 붙여 넣으세요. 실행되지는 않습니다.</small></label></>}
         {question.type === 'scale' && 'min' in question && <div className="form-grid four"><label><span>최솟값</span><input type="number" value={question.min} onChange={(event) => update({ min: Number(event.target.value) } as Partial<Question>)} /></label><label><span>최댓값</span><input type="number" value={question.max} onChange={(event) => update({ max: Number(event.target.value) } as Partial<Question>)} /></label><label><span>최소 레이블</span><input value={question.minLabel ?? ''} onChange={(event) => update({ minLabel: event.target.value } as Partial<Question>)} /></label><label><span>최대 레이블</span><input value={question.maxLabel ?? ''} onChange={(event) => update({ maxLabel: event.target.value } as Partial<Question>)} /></label></div>}
-        {question.type === 'termMatrix' && 'terms' in question && <div className="form-grid two"><label><span>용어 <small>값=표시문구</small></span><textarea rows={5} value={optionLines(question.terms)} onChange={(event) => update({ terms: parseOptionLines(event.target.value) } as Partial<Question>)} /></label><label><span>인지도 단계 <small>값=표시문구</small></span><textarea rows={5} value={optionLines(question.levels)} onChange={(event) => update({ levels: parseOptionLines(event.target.value) } as Partial<Question>)} /></label></div>}
+        {question.type === 'termMatrix' && 'terms' in question && <div className="form-grid two"><label><span>확인할 용어</span><textarea rows={5} value={optionLines(question.terms)} onChange={(event) => update({ terms: parseOptionLines(event.target.value) } as Partial<Question>)} /><small className="field-help">한 줄에 하나씩 입력하세요. 예: <code>React</code>, <code>Git</code></small></label><label><span>인지도 단계</span><textarea rows={5} value={optionLines(question.levels)} onChange={(event) => update({ levels: parseOptionLines(event.target.value) } as Partial<Question>)} /><small className="field-help">예: <code>처음 듣는다</code>, <code>설명할 수 있다</code></small></label></div>}
         <details className="advanced-settings"><summary>조건부 표시 설정</summary><div className="form-grid two"><label><span>참조 문항 ID</span><input value={question.showIf?.questionId ?? ''} onChange={(event) => update({ showIf: event.target.value ? { ...(question.showIf ?? { equals: '' }), questionId: event.target.value } : undefined })} /></label><label><span>조건 연산자</span><select disabled={!question.showIf} value={question.showIf?.notEquals !== undefined ? 'notEquals' : question.showIf?.includes !== undefined ? 'includes' : 'equals'} onChange={(event) => { if (!question.showIf) return; const currentValue = question.showIf.equals ?? question.showIf.notEquals ?? question.showIf.includes ?? ''; update({ showIf: { questionId: question.showIf.questionId, [event.target.value]: currentValue } }) }}><option value="equals">같음</option><option value="notEquals">같지 않음</option><option value="includes">복수 응답에 포함</option></select></label><label><span>비교 값</span><input value={String(question.showIf?.equals ?? question.showIf?.notEquals ?? question.showIf?.includes ?? '')} disabled={!question.showIf} onChange={(event) => { if (!question.showIf) return; const operator = question.showIf.notEquals !== undefined ? 'notEquals' : question.showIf.includes !== undefined ? 'includes' : 'equals'; update({ showIf: { questionId: question.showIf.questionId, [operator]: event.target.value } }) }} /></label></div></details>
         <div className="editor-actions"><button type="button" className="button danger" onClick={onDelete}>문항 삭제</button></div>
       </div>
@@ -113,6 +137,8 @@ export function SurveyBuilderPage() {
   const [usingRemoteCatalog, setUsingRemoteCatalog] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState('common')
   const [newType, setNewType] = useState<QuestionType>('single')
+  const [newPosition, setNewPosition] = useState(0)
+  const [recentQuestionId, setRecentQuestionId] = useState('')
   const [preview, setPreview] = useState(false)
   const [message, setMessage] = useState<{ tone: 'success' | 'danger' | 'warning'; text: string } | null>(null)
   const [saving, setSaving] = useState(false)
@@ -148,6 +174,7 @@ export function SurveyBuilderPage() {
     return groups
   }, new Map<string, StackDefinition[]>()), [availableStacks])
   const publicUrl = `${window.location.origin}${window.location.pathname}#/s/${survey.surveyId}`
+  const insertionPosition = Math.min(newPosition, survey.questions.length)
 
   function applyTemplate(templateId: string) {
     const template = availableTemplates.find((item) => item.templateId === templateId)
@@ -180,6 +207,14 @@ export function SurveyBuilderPage() {
       if (questions === current.questions) return current
       return { ...current, questions }
     })
+  }
+
+  function addQuestion() {
+    const question = defaultQuestion(newType, survey.questions)
+    const target = insertionPosition
+    setSurvey((current) => ({ ...current, questions: insertItem(current.questions, question, target) }))
+    setRecentQuestionId(question.id)
+    setNewPosition(target + 1)
   }
 
   async function importSurvey(file: File) {
@@ -255,7 +290,24 @@ export function SurveyBuilderPage() {
 
             <section className="builder-section"><div className="section-title"><span>03</span><div><h2>프로그래밍 스택 자동 문항</h2><p>체크하면 해당 스택의 코드·용어 문항이 즉시 추가됩니다. 해제하면 자동 생성 문항만 제거됩니다.</p></div></div>{[...groupedStacks.entries()].map(([group, stacks]) => <div className="stack-group" key={group}><h3>{group}</h3><div className="stack-grid">{stacks.map((stack) => { const checked = survey.selectedStacks?.includes(stack.id) ?? false; return <label className={checked ? 'selected' : ''} key={stack.id}><input type="checkbox" checked={checked} onChange={() => toggleStack(stack.id)} /><span><strong>{stack.label}</strong><small>{stack.description}</small></span></label> })}</div></div>)}</section>
 
-            <section className="builder-section"><div className="section-title"><span>04</span><div><h2>문항 편집</h2><p>{survey.questions.length}개 문항 · 문항을 펼치면 원하는 번호로 한 번에 이동할 수 있습니다.</p></div></div><div className="add-question"><select value={newType} onChange={(event) => setNewType(event.target.value as QuestionType)}>{QUESTION_TYPES.map((type) => <option key={type} value={type}>{typeLabels[type]}</option>)}</select><button className="button secondary" onClick={() => setSurvey((current) => ({ ...current, questions: [...current.questions, defaultQuestion(newType, current.questions)] }))}>문항 추가</button></div><div className="question-editor-list">{survey.questions.map((question, index) => <QuestionEditor key={question.id} question={question} index={index} total={survey.questions.length} onChange={(value) => updateQuestion(index, value)} onDelete={() => setSurvey((current) => ({ ...current, questions: current.questions.filter((_, itemIndex) => itemIndex !== index) }))} onMoveTo={(targetIndex) => moveQuestion(index, targetIndex)} />)}</div></section>
+            <section className="builder-section">
+              <div className="section-title"><span>04</span><div><h2>문항 편집</h2><p>{survey.questions.length}개 문항 · 만들 위치를 먼저 정하고 내용을 작성하세요.</p></div></div>
+              <div className="question-authoring-guide" aria-label="문항 작성 방법">
+                <div><span>1</span><p><strong>유형 선택</strong><small>객관식, 주관식, 코드 등</small></p></div>
+                <div><span>2</span><p><strong>추가 위치 선택</strong><small>맨 앞이나 원하는 문항 뒤</small></p></div>
+                <div><span>3</span><p><strong>내용 작성</strong><small>새 문항이 열린 상태로 표시됩니다.</small></p></div>
+              </div>
+              <div className="question-create-card">
+                <div className="question-create-heading"><span aria-hidden="true">＋</span><div><strong>새 문항 만들기</strong><small>유형과 위치를 선택한 다음 추가하세요.</small></div></div>
+                <div className="question-create-grid">
+                  <label><span>문항 유형</span><select value={newType} onChange={(event) => setNewType(event.target.value as QuestionType)}>{QUESTION_TYPES.map((type) => <option key={type} value={type}>{typeLabels[type]}</option>)}</select></label>
+                  <label><span>추가 위치</span><select value={insertionPosition} onChange={(event) => setNewPosition(Number(event.target.value))}>{Array.from({ length: survey.questions.length + 1 }, (_, position) => <option key={position} value={position}>{insertionPositionLabel(position, survey.questions.length)}</option>)}</select></label>
+                  <button type="button" className="button primary" onClick={addQuestion}>이 위치에 추가</button>
+                </div>
+                <p className="question-type-help"><span aria-hidden="true">i</span>{typeHelp[newType]}</p>
+              </div>
+              <div className="question-editor-list">{survey.questions.map((question, index) => <QuestionEditor key={question.id} question={question} index={index} total={survey.questions.length} autoOpen={question.id === recentQuestionId} onChange={(value) => updateQuestion(index, value)} onDelete={() => setSurvey((current) => ({ ...current, questions: current.questions.filter((_, itemIndex) => itemIndex !== index) }))} onMoveTo={(targetIndex) => moveQuestion(index, targetIndex)} />)}</div>
+            </section>
           </div>
 
           <aside className="builder-aside">
