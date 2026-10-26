@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { QRCodeSVG } from 'qrcode.react'
 import { useAdminSession } from '../app/AdminSession'
@@ -167,12 +167,6 @@ export function SurveyBuilderPage() {
     })
   }, [])
 
-  const groupedStacks = useMemo(() => availableStacks.reduce((groups, stack) => {
-    const current = groups.get(stack.group) ?? []
-    current.push(stack)
-    groups.set(stack.group, current)
-    return groups
-  }, new Map<string, StackDefinition[]>()), [availableStacks])
   const publicUrl = `${window.location.origin}${window.location.pathname}#/s/${survey.surveyId}`
   const insertionPosition = Math.min(newPosition, survey.questions.length)
 
@@ -195,6 +189,10 @@ export function SurveyBuilderPage() {
     const current = survey.selectedStacks ?? []
     const selectedStacks = current.includes(stackId) ? current.filter((id) => id !== stackId) : [...current, stackId]
     setSurvey((value) => ({ ...value, selectedStacks, questions: syncStackQuestions(value.questions, selectedStacks, availableStacks) }))
+  }
+
+  function clearStacks() {
+    setSurvey((current) => ({ ...current, selectedStacks: [], questions: syncStackQuestions(current.questions, [], availableStacks) }))
   }
 
   function updateQuestion(index: number, question: Question) {
@@ -288,7 +286,25 @@ export function SurveyBuilderPage() {
 
             <section className="builder-section"><div className="section-title"><span>02</span><div><h2>교육과정 템플릿</h2><p>템플릿은 기본 문항 구성을 교체합니다. {usingRemoteCatalog ? 'data 브랜치의 최신 JSON을 사용 중입니다.' : '내장 데모 JSON을 사용 중입니다.'}</p></div></div><div className="template-grid">{availableTemplates.map((template) => <button type="button" key={template.templateId} className={selectedTemplate === template.templateId ? 'selected' : ''} onClick={() => applyTemplate(template.templateId)}><strong>{template.name}</strong><small>{template.description}</small></button>)}</div></section>
 
-            <section className="builder-section"><div className="section-title"><span>03</span><div><h2>프로그래밍 스택 자동 문항</h2><p>체크하면 해당 스택의 코드·용어 문항이 즉시 추가됩니다. 해제하면 자동 생성 문항만 제거됩니다.</p></div></div>{[...groupedStacks.entries()].map(([group, stacks]) => <div className="stack-group" key={group}><h3>{group}</h3><div className="stack-grid">{stacks.map((stack) => { const checked = survey.selectedStacks?.includes(stack.id) ?? false; return <label className={checked ? 'selected' : ''} key={stack.id}><input type="checkbox" checked={checked} onChange={() => toggleStack(stack.id)} /><span><strong>{stack.label}</strong><small>{stack.description}</small></span></label> })}</div></div>)}</section>
+            <section className="builder-section">
+              <div className="section-title"><span>03</span><div><h2>프로그래밍 스택 자동 문항</h2><p>필요한 기술만 선택하면 관련 코드·용어 문항이 자동으로 구성됩니다.</p></div></div>
+              <div className="stack-selector-toolbar">
+                <div><strong>{survey.selectedStacks?.length ?? 0}</strong><span>/ {availableStacks.length}개 선택</span><small>선택 해제 시 해당 스택의 자동 생성 문항만 제거됩니다.</small></div>
+                {(survey.selectedStacks?.length ?? 0) > 0 && <button type="button" onClick={clearStacks}>선택 초기화</button>}
+              </div>
+              <div className="stack-catalog-grid">
+                {availableStacks.map((stack) => {
+                  const checked = survey.selectedStacks?.includes(stack.id) ?? false
+                  return (
+                    <label className={`stack-card${checked ? ' selected' : ''}`} key={stack.id}>
+                      <input type="checkbox" checked={checked} onChange={() => toggleStack(stack.id)} />
+                      <span className="stack-card-check" aria-hidden="true">{checked ? '✓' : ''}</span>
+                      <span className="stack-card-copy"><small className="stack-card-group">{stack.group}</small><strong>{stack.label}</strong><small>{stack.description}</small></span>
+                    </label>
+                  )
+                })}
+              </div>
+            </section>
 
             <section className="builder-section">
               <div className="section-title"><span>04</span><div><h2>문항 편집</h2><p>{survey.questions.length}개 문항 · 만들 위치를 먼저 정하고 내용을 작성하세요.</p></div></div>
